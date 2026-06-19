@@ -1,0 +1,90 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+}
+
+.tagSmall {
+  padding: 4rpx 12rpx;
+}
+
+.tagMedium {
+  padding: 8rpx 20rpx;
+}
+
+.tagText {
+  font-size: $font-size-xs;
+  line-height: 1.2;
+}
+
+.tagDefault {
+  background: $color-bg-tag;
+  color: $color-primary;
+
+  .tagText {
+    font-size: $font-size-xs;
+  }
+
+  &.tagOutline {
+    background: transparent;
+    border: 1rpx solid $color-primary;
+  }
+}
+
+.tagPrimary {
+  background: $gradient-primary;
+
+  .tagText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+
+  &.tagOutline {
+    background: transparent;
+    border: 1rpx solid $color-primary;
+
+    .tagText {
+      color: $color-primary;
+    }
+  }
+}
+
+.tagSecondary {
+  background: $color-secondary;
+
+  .tagText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.tagSuccess {
+  background: $color-match-high;
+
+  .tagText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.tagWarning {
+  background: $color-match-medium;
+
+  .tagText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.tagError {
+  background: $color-match-low;
+
+  .tagText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}

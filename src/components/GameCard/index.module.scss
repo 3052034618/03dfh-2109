@@ -1,0 +1,153 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+    box-shadow: $shadow-card-hover;
+  }
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  height: 280rpx;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+}
+
+.limitedBadge {
+  position: absolute;
+  top: $spacing-sm;
+  left: $spacing-sm;
+  background: $gradient-secondary;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+}
+
+.limitedText {
+  color: $color-text-white;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.matchBadgeWrapper {
+  position: absolute;
+  top: $spacing-sm;
+  right: $spacing-sm;
+}
+
+.content {
+  padding: $spacing-lg;
+}
+
+.header {
+  margin-bottom: $spacing-md;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  line-height: 1.4;
+  @include text-ellipsis-multi(2);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.metaLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.metaValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.tagsRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+  margin-bottom: $spacing-lg;
+  flex-wrap: wrap;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.priceInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.priceLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.price {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.deposit {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.playerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+}
+
+.playerCount {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.progressBar {
+  width: 160rpx;
+  height: 8rpx;
+  background: $color-bg-tag;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: $gradient-primary;
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}

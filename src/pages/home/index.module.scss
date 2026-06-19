@@ -1,0 +1,151 @@
+@use '@/styles/variables.scss' as *;
+
+.homePage {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+.welcomeSection {
+  background: $gradient-primary;
+  padding: $spacing-xl $page-padding $spacing-lg;
+  margin: 0 (-$page-padding) $spacing-md;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100rpx;
+    right: -100rpx;
+    width: 300rpx;
+    height: 300rpx;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -80rpx;
+    left: -80rpx;
+    width: 200rpx;
+    height: 200rpx;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+  }
+}
+
+.welcomeHeader {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  position: relative;
+  z-index: 1;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: $radius-round;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+}
+
+.welcomeText {
+  flex: 1;
+}
+
+.welcomeTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  margin-bottom: 4rpx;
+}
+
+.welcomeSubtitle {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.preferencesRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.prefTag {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6rpx 16rpx;
+  border-radius: $radius-button;
+}
+
+.prefTagText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.gameList {
+  padding-top: $spacing-sm;
+}
+
+.loadingText {
+  text-align: center;
+  padding: $spacing-xl;
+  color: $color-text-tertiary;
+  font-size: $font-size-md;
+}
+
+.fab {
+  position: fixed;
+  right: $page-padding;
+  bottom: 140rpx;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: $radius-round;
+  background: $gradient-primary;
+  box-shadow: 0 8rpx 32rpx rgba($color-primary, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 4rpx 16rpx rgba($color-primary, 0.3);
+  }
+}
+
+.fabIcon {
+  font-size: 48rpx;
+  color: $color-text-white;
+  line-height: 1;
+  margin-bottom: 4rpx;
+}
+
+.fabText {
+  font-size: 20rpx;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}

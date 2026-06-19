@@ -1,0 +1,184 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+    box-shadow: $shadow-card-hover;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.publisher {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+}
+
+.publisherInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.publisherName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.publishTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.statusBadge {
+  padding: 6rpx 16rpx;
+  border-radius: $radius-sm;
+}
+
+.statusOpen {
+  background: rgba($color-match-high, 0.15);
+
+  .statusText {
+    color: $color-match-high;
+  }
+}
+
+.statusFull {
+  background: rgba($color-match-medium, 0.15);
+
+  .statusText {
+    color: $color-match-medium;
+  }
+}
+
+.statusCompleted {
+  background: rgba($color-text-tertiary, 0.15);
+
+  .statusText {
+    color: $color-text-tertiary;
+  }
+}
+
+.statusText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.content {
+  margin-bottom: $spacing-md;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.cityLabel {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.scriptName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.metaRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.optionRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  @include text-ellipsis-multi(2);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.players {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.playerAvatars {
+  display: flex;
+}
+
+.avatarsRow {
+  display: flex;
+}
+
+.playerAvatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: $radius-round;
+  margin-left: -12rpx;
+  border: 3rpx solid $color-bg-card;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.playerCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.missing {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.missingLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.missingCount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-secondary;
+}

@@ -1,0 +1,174 @@
+@use '@/styles/variables.scss' as *;
+
+.companionPage {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md 0;
+}
+
+.pageTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.publishBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-lg;
+  background: $gradient-primary;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.publishBtnText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-white;
+}
+
+.tabBar {
+  display: flex;
+  background: $color-bg-tag;
+  border-radius: $radius-button;
+  padding: 6rpx;
+  margin-bottom: $spacing-md;
+}
+
+.tabItem {
+  flex: 1;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+  position: relative;
+}
+
+.tabItemActive {
+  background: $gradient-primary;
+  box-shadow: 0 2rpx 8rpx rgba($color-primary, 0.3);
+
+  .tabText {
+    color: $color-text-white;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.tabText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.notificationDot {
+  position: absolute;
+  top: 8rpx;
+  right: 40rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  background: $color-error;
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8rpx;
+}
+
+.notificationDotText {
+  font-size: 20rpx;
+  color: $color-text-white;
+  font-weight: $font-weight-bold;
+  line-height: 1;
+}
+
+.filterScroll {
+  margin-bottom: $spacing-md;
+  white-space: nowrap;
+}
+
+.filterTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 24rpx;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  margin-right: $spacing-sm;
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+}
+
+.filterTagActive {
+  background: rgba($color-primary, 0.1);
+  border-color: $color-primary;
+
+  .filterTagText {
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.filterTagText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.cardList {
+  padding-top: $spacing-sm;
+}
+
+.emptyState {
+  padding: 120rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.emptyIcon {
+  font-size: 120rpx;
+  opacity: 0.3;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.emptyBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-xl;
+  background: $gradient-primary;
+  border-radius: $radius-button;
+  margin-top: $spacing-sm;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.emptyBtnText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-white;
+}
+
+.loadingText {
+  text-align: center;
+  padding: $spacing-xl;
+  color: $color-text-tertiary;
+  font-size: $font-size-md;
+}

@@ -1,0 +1,188 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+    box-shadow: $shadow-card-hover;
+  }
+}
+
+.header {
+  margin-bottom: $spacing-md;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.statusBadge {
+  padding: 4rpx 12rpx;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+.statusUpcoming {
+  background: rgba($color-primary, 0.15);
+
+  .statusText {
+    color: $color-primary;
+  }
+}
+
+.statusOngoing {
+  background: rgba($color-match-medium, 0.15);
+
+  .statusText {
+    color: $color-match-medium;
+  }
+}
+
+.statusCompleted {
+  background: rgba($color-match-high, 0.15);
+
+  .statusText {
+    color: $color-match-high;
+  }
+}
+
+.statusText {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.date {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.content {
+  margin-bottom: $spacing-md;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+}
+
+.storeName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+  flex: 1;
+}
+
+.progressSection {
+  margin-bottom: $spacing-md;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.progressLabel {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.progressCount {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.progressBar {
+  height: 12rpx;
+  background: $color-bg-tag;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: $gradient-primary;
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.progressFillCompleted {
+  background: $color-match-high;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.budgetInfo {
+  display: flex;
+  align-items: baseline;
+  gap: 8rpx;
+}
+
+.budgetLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.budget {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.companions {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  max-width: 60%;
+}
+
+.companionsLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.companionsText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+}

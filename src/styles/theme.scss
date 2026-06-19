@@ -1,0 +1,45 @@
+// ============================================
+// 主题配色变量（剧本杀跨城约伴 App）
+// ============================================
+
+// 品牌主题色：紫罗兰 - 代表神秘与社交
+$color-primary: #7c3aed;
+$color-primary-light: #a78bfa;
+$color-primary-dark: #5b21b6;
+
+// 辅助色：珊瑚粉 - 温暖活泼
+$color-secondary: #f472b6;
+$color-secondary-light: #f9a8d4;
+
+// 功能色
+$color-success: #10b981;
+$color-warning: #f59e0b;
+$color-error: #ef4444;
+$color-info: #3b82f6;
+
+// 匹配度色
+$color-match-high: #10b981;
+$color-match-medium: #f59e0b;
+$color-match-low: #ef4444;
+
+// 背景色
+$color-bg-page: #faf5ff;
+$color-bg-card: #ffffff;
+$color-bg-hover: #f3e8ff;
+$color-bg-tag: #eef2ff;
+$color-bg-gradient: linear-gradient(180deg, #faf5ff 0%, #ffffff 100%);
+
+// 文本色
+$color-text-primary: #1f2937;
+$color-text-secondary: #6b7280;
+$color-text-tertiary: #9ca3af;
+$color-text-disabled: #d1d5db;
+$color-text-white: #ffffff;
+
+// 边框色
+$color-border: #e5e7eb;
+$color-divider: #f3f4f6;
+
+// 渐变
+$gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+$gradient-secondary: linear-gradient(135deg, #f472b6 0%, #f9a8d4 100%);
