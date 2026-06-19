@@ -3,13 +3,18 @@ import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import { mockGames } from '../../data/games';
-import { useUserStore } from '../../store/useUserStore';
+import { useUserStore, calcMatchScore, type MatchReason } from '../../store/useUserStore';
 import { scriptTypeLabels } from '../../types/user';
 import type { ScriptType } from '../../types/user';
 import type { TourGame } from '../../types/game';
 import { isDateInRange } from '../../utils/date';
 import GameCard from '../../components/GameCard';
 import FilterBar from '../../components/FilterBar';
+
+interface GameWithMatch extends TourGame {
+  matchScore: number;
+  matchReasons: MatchReason[];
+}
 
 const HomePage: React.FC = () => {
   const { profile } = useUserStore();
@@ -36,8 +41,18 @@ const HomePage: React.FC = () => {
     }, 500);
   };
 
-  const filteredGames = useMemo(() => {
+  const filteredGames: GameWithMatch[] = useMemo(() => {
     return games
+      .map((game) => {
+        const { score, reasons } = calcMatchScore(
+          game.city,
+          game.scriptType as ScriptType,
+          game.price,
+          game.date,
+          profile
+        );
+        return { ...game, matchScore: score, matchReasons: reasons };
+      })
       .filter((game) => {
         if (filters.city !== '全部' && game.city !== filters.city) return false;
         if (filters.scriptType !== 'all' && game.scriptType !== filters.scriptType) return false;
@@ -45,7 +60,7 @@ const HomePage: React.FC = () => {
         return true;
       })
       .sort((a, b) => b.matchScore - a.matchScore);
-  }, [games, filters]);
+  }, [games, filters, profile]);
 
   const handleFilterChange = (newFilters: typeof filters) => {
     console.log('[HomePage] 筛选条件变更:', newFilters);

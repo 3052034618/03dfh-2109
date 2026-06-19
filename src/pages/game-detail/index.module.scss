@@ -1,31 +1,288 @@
 @use '@/styles/variables.scss' as *;
 
-.placeholderPage {
+.page {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: $page-padding;
-  box-sizing: border-box;
+  padding-bottom: 200rpx;
+}
+
+.notFound {
+  text-align: center;
+  padding: 120rpx 0;
+  color: $color-text-tertiary;
+  font-size: $font-size-md;
+}
+
+.coverWrap {
+  position: relative;
+  width: 100%;
+  height: 420rpx;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+}
+
+.matchBadgeWrap {
+  position: absolute;
+  top: $spacing-lg;
+  right: $spacing-lg;
+}
+
+.limitedTag {
+  position: absolute;
+  top: $spacing-lg;
+  left: $spacing-lg;
+  background: $gradient-secondary;
+  padding: 10rpx 24rpx;
+  border-radius: $radius-sm;
+}
+
+.limitedTagText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.infoSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-top: -40rpx;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
-  font-size: $font-size-xl;
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.scriptName {
+  font-size: $font-size-lg;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-md;
+}
+
+.tagRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-lg;
+  flex-wrap: wrap;
+}
+
+.infoGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.infoItem {
+  width: calc(50% - #{$spacing-md} / 2);
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: 4rpx;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.priceText {
+  font-size: $font-size-lg;
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+}
+
+.storeSection,
+.matchSection,
+.descSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
   font-weight: $font-weight-semibold;
   color: $color-text-primary;
   margin-bottom: $spacing-md;
 }
 
-.icon {
-  font-size: 120rpx;
-  margin-bottom: $spacing-lg;
-  opacity: 0.3;
+.storeName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: 4rpx;
 }
 
-.message {
-  font-size: $font-size-md;
+.storeAddress {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-md;
+}
+
+.storeMeta {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.matchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.matchScore {
+  display: flex;
+  align-items: baseline;
+}
+
+.matchScoreNum {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.matchScoreUnit {
+  font-size: $font-size-sm;
   color: $color-text-tertiary;
-  text-align: center;
+  margin-left: 4rpx;
+}
+
+.matchList {
+  margin-bottom: $spacing-md;
+}
+
+.matchItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.matchDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: $radius-round;
+  margin-top: 10rpx;
+  flex-shrink: 0;
+}
+
+.matchDotMatch {
+  background: $color-match-high;
+}
+
+.matchDotMismatch {
+  background: $color-text-tertiary;
+}
+
+.matchContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matchLabel {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+}
+
+.matchLabelMatch {
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.matchScoreTag {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.matchTip {
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.matchTipText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
   line-height: 1.6;
+}
+
+.descText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.8;
+}
+
+.bottomBtns {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $spacing-lg;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  display: flex;
+  gap: $spacing-md;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.secondaryBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-bg-tag;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.secondaryBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.primaryBtn {
+  @include button-reset;
+  flex: 2;
+  height: $button-height-lg;
+  background: $gradient-primary;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.primaryBtnText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
 }

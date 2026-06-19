@@ -4,31 +4,74 @@ import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import { useAppStore } from '../../store/useAppStore';
+import { useUserStore } from '../../store/useUserStore';
 import { cities } from '../../data/games';
 import { scriptTypeLabels, type ScriptType } from '../../types/user';
 import type { CompanionCard } from '../../types/companion';
 import CompanionCardComponent from '../../components/CompanionCard';
 
+type TabType = 'all' | 'published' | 'joined';
+type JoinedFilter = 'all' | 'pending' | 'confirmed' | 'ended';
+
 const CompanionPage: React.FC = () => {
   const { companionCards } = useAppStore();
-  const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
+  const { profile } = useUserStore();
+  const [activeTab, setActiveTab] = useState<TabType>('all');
+  const [joinedFilter, setJoinedFilter] = useState<JoinedFilter>('all');
   const [selectedCity, setSelectedCity] = useState('全部');
   const [selectedType, setSelectedType] = useState<ScriptType | 'all'>('all');
 
   const pendingIntentions = useMemo(() => {
-    return companionCards.filter(c => c.publisherId === 'me').reduce((count, card) => {
+    return companionCards.filter(c => c.publisherId === profile.id).reduce((count, card) => {
       return count + card.companions.filter(comp => !comp.isConfirmed).length;
     }, 0);
-  }, [companionCards]);
+  }, [companionCards, profile.id]);
+
+  const myJoinedPendingCount = useMemo(() => {
+    return companionCards.filter(card => {
+      const myCompanion = card.companions.find(c => c.userId === profile.id);
+      return myCompanion && !myCompanion.isConfirmed;
+    }).length;
+  }, [companionCards, profile.id]);
+
+  const joinedCards = useMemo(() => {
+    return companionCards.filter(card =>
+      card.companions.some(c => c.userId === profile.id)
+    );
+  }, [companionCards, profile.id]);
+
+  const filteredJoinedCards = useMemo(() => {
+    return joinedCards.filter(card => {
+      if (joinedFilter === 'pending') {
+        const myComp = card.companions.find(c => c.userId === profile.id);
+        return myComp && !myComp.isConfirmed;
+      }
+      if (joinedFilter === 'confirmed') {
+        const myComp = card.companions.find(c => c.userId === profile.id);
+        return myComp && myComp.isConfirmed;
+      }
+      if (joinedFilter === 'ended') {
+        return card.status === 'completed';
+      }
+      return true;
+    });
+  }, [joinedCards, joinedFilter, profile.id]);
 
   const filteredCards = useMemo(() => {
-    return companionCards.filter((card) => {
-      if (activeTab === 'my' && card.publisherId !== 'me') return false;
+    let baseCards = companionCards;
+
+    if (activeTab === 'published') {
+      baseCards = companionCards.filter(c => c.publisherId === profile.id);
+    } else if (activeTab === 'joined') {
+      baseCards = filteredJoinedCards;
+    }
+
+    return baseCards.filter((card) => {
       if (selectedCity !== '全部' && card.targetCity !== selectedCity) return false;
       if (selectedType !== 'all' && card.scriptType !== selectedType) return false;
       return true;
     });
-  }, [companionCards, activeTab, selectedCity, selectedType]);
+  }, [companionCards, activeTab, selectedCity, selectedType, filteredJoinedCards, profile.id]);
 
   const handlePublish = () => {
     console.log('[CompanionPage] 点击发布约伴卡');
@@ -43,6 +86,24 @@ const CompanionPage: React.FC = () => {
   ];
 
   const filterCities = ['全部', ...cities.filter(c => c !== '全部')];
+
+  const joinedFilters: { key: JoinedFilter; label: string }[] = [
+    { key: 'all', label: '全部' },
+    { key: 'pending', label: '待确认' },
+    { key: 'confirmed', label: '已确认' },
+    { key: 'ended', label: '已结束' }
+  ];
+
+  const getEmptyText = () => {
+    if (activeTab === 'published') return '你还没有发布约伴卡';
+    if (activeTab === 'joined') {
+      if (joinedFilter === 'pending') return '暂无待确认的约伴';
+      if (joinedFilter === 'confirmed') return '暂无已确认的约伴';
+      if (joinedFilter === 'ended') return '暂无已结束的约伴';
+      return '你还没有参与任何约伴';
+    }
+    return '暂无符合条件的约伴卡';
+  };
 
   return (
     <ScrollView scrollY className={styles.companionPage}>
@@ -62,17 +123,44 @@ const CompanionPage: React.FC = () => {
             <Text className={styles.tabText}>全部约伴</Text>
           </View>
           <View
-            className={classnames(styles.tabItem, activeTab === 'my' && styles.tabItemActive)}
-            onClick={() => setActiveTab('my')}
+            className={classnames(styles.tabItem, activeTab === 'published' && styles.tabItemActive)}
+            onClick={() => setActiveTab('published')}
           >
-            <Text className={styles.tabText}>我的约伴</Text>
+            <Text className={styles.tabText}>我的发布</Text>
             {pendingIntentions > 0 && (
               <View className={styles.notificationDot}>
                 <Text className={styles.notificationDotText}>{pendingIntentions}</Text>
               </View>
             )}
           </View>
+          <View
+            className={classnames(styles.tabItem, activeTab === 'joined' && styles.tabItemActive)}
+            onClick={() => setActiveTab('joined')}
+          >
+            <Text className={styles.tabText}>我的参与</Text>
+            {myJoinedPendingCount > 0 && (
+              <View className={styles.notificationDot}>
+                <Text className={styles.notificationDotText}>{myJoinedPendingCount}</Text>
+              </View>
+            )}
+          </View>
         </View>
+
+        {activeTab === 'joined' && (
+          <View className={styles.subFilterBar}>
+            {joinedFilters.map((f) => (
+              <View
+                key={f.key}
+                className={classnames(styles.subFilterItem, joinedFilter === f.key && styles.subFilterItemActive)}
+                onClick={() => setJoinedFilter(f.key)}
+              >
+                <Text className={joinedFilter === f.key ? styles.subFilterTextActive : styles.subFilterText}>
+                  {f.label}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
 
         <ScrollView scrollX className={styles.filterScroll}>
           {filterCities.map((city) => (
@@ -101,12 +189,12 @@ const CompanionPage: React.FC = () => {
         {filteredCards.length === 0 ? (
           <View className={styles.emptyState}>
             <Text className={styles.emptyIcon}>📝</Text>
-            <Text className={styles.emptyText}>
-              {activeTab === 'my' ? '你还没有发布约伴卡' : '暂无符合条件的约伴卡'}
-            </Text>
-            <Button className={styles.emptyBtn} onClick={handlePublish}>
-              <Text className={styles.emptyBtnText}>发布第一个约伴卡</Text>
-            </Button>
+            <Text className={styles.emptyText}>{getEmptyText()}</Text>
+            {(activeTab === 'published' || activeTab === 'all') && (
+              <Button className={styles.emptyBtn} onClick={handlePublish}>
+                <Text className={styles.emptyBtnText}>发布第一个约伴卡</Text>
+              </Button>
+            )}
           </View>
         ) : (
           <View className={styles.cardList}>

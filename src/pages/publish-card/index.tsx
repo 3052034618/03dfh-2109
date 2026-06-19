@@ -48,6 +48,8 @@ const PublishCardPage: React.FC = () => {
       publisherId: profile.id,
       publisherName: profile.nickname,
       publisherAvatar: profile.avatar,
+      publisherWechat: profile.wechatId,
+      publisherPhone: profile.phone,
       targetCity: targetCity.trim(),
       scriptName: scriptName.trim(),
       scriptType,

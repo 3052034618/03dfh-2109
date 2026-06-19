@@ -14,6 +14,8 @@ export interface Companion {
   intention: IntentionType;
   isConfirmed: boolean;
   city: string;
+  wechatId?: string;
+  phone?: string;
 }
 
 export interface CompanionCard {
@@ -21,6 +23,8 @@ export interface CompanionCard {
   publisherId: string;
   publisherName: string;
   publisherAvatar: string;
+  publisherWechat?: string;
+  publisherPhone?: string;
   targetCity: string;
   scriptName: string;
   scriptType: string;

@@ -93,6 +93,42 @@
   line-height: 1;
 }
 
+.subFilterBar {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.subFilterItem {
+  flex: 1;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-bg-tag;
+  border-radius: $radius-md;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.subFilterItemActive {
+  background: rgba($color-primary, 0.15);
+}
+
+.subFilterText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.subFilterTextActive {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
 .filterScroll {
   margin-bottom: $spacing-md;
   white-space: nowrap;

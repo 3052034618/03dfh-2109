@@ -9,6 +9,8 @@ export interface UserProfile {
     maxTransport: number;
     maxAccommodation: number;
   };
+  wechatId?: string;
+  phone?: string;
   gender?: 'male' | 'female';
   age?: number;
   bio?: string;

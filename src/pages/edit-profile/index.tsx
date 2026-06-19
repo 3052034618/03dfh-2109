@@ -28,6 +28,8 @@ const EditProfilePage: React.FC = () => {
   const [selectedTypes, setSelectedTypes] = useState<ScriptType[]>(profile.scriptPreferences);
   const [maxTransport, setMaxTransport] = useState(String(profile.budget.maxTransport));
   const [maxAccommodation, setMaxAccommodation] = useState(String(profile.budget.maxAccommodation));
+  const [wechatId, setWechatId] = useState(profile.wechatId || '');
+  const [phone, setPhone] = useState(profile.phone || '');
   const [bio, setBio] = useState(profile.bio || '');
 
   const toggleWeekend = (value: string) => {
@@ -56,7 +58,7 @@ const EditProfilePage: React.FC = () => {
       return;
     }
 
-    setProfile({ nickname: nickname.trim(), bio: bio.trim() });
+    setProfile({ nickname: nickname.trim(), bio: bio.trim(), wechatId: wechatId.trim(), phone: phone.trim() });
     updatePreferences({
       residentCity,
       availableWeekends: selectedWeekends,
@@ -114,6 +116,30 @@ const EditProfilePage: React.FC = () => {
               placeholder="介绍一下自己..."
               value={bio}
               onInput={(e) => setBio(e.detail.value)}
+            />
+          </View>
+        </View>
+
+        <View className={styles.section}>
+          <Text className={styles.sectionTitle}>联系方式（确认同行后展示给对方）</Text>
+
+          <View className={styles.formItem}>
+            <Text className={styles.label}>微信号</Text>
+            <Input
+              className={styles.input}
+              placeholder="你的微信号"
+              value={wechatId}
+              onInput={(e) => setWechatId(e.detail.value)}
+            />
+          </View>
+
+          <View className={styles.formItem}>
+            <Text className={styles.label}>手机号</Text>
+            <Input
+              className={styles.input}
+              placeholder="你的手机号"
+              value={phone}
+              onInput={(e) => setPhone(e.detail.value)}
             />
           </View>
         </View>

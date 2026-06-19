@@ -236,6 +236,33 @@
   line-height: 1.6;
 }
 
+.waitingHint {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.successSection {
+  background: rgba($color-match-high, 0.08);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.successIcon {
+  font-size: 64rpx;
+}
+
+.successText {
+  font-size: $font-size-md;
+  color: $color-match-high;
+  text-align: center;
+  line-height: 1.6;
+}
+
 .contactSection {
   background: $color-bg-card;
   border-radius: $radius-lg;

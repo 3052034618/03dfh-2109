@@ -62,6 +62,34 @@
   @include text-ellipsis-multi(2);
 }
 
+.matchReasonRow {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.matchReasonTag {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 6rpx 16rpx;
+  background: rgba($color-match-high, 0.1);
+  border-radius: $radius-sm;
+}
+
+.matchReasonIcon {
+  font-size: 20rpx;
+  color: $color-match-high;
+  font-weight: $font-weight-bold;
+}
+
+.matchReasonText {
+  font-size: 20rpx;
+  color: $color-match-high;
+  font-weight: $font-weight-medium;
+}
+
 .metaRow {
   display: flex;
   align-items: center;

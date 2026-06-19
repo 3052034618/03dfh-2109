@@ -49,7 +49,9 @@ const CardDetailPage: React.FC = () => {
       avatar: profile.avatar,
       intention: selectedIntention,
       isConfirmed: false,
-      city: profile.residentCity
+      city: profile.residentCity,
+      wechatId: profile.wechatId,
+      phone: profile.phone
     };
 
     addIntention(card.id, companion);
@@ -76,6 +78,8 @@ const CardDetailPage: React.FC = () => {
   }
 
   const scriptType = card.scriptType as keyof typeof scriptTypeLabels;
+  const showPublisherContact = isPublisher || (myIntention?.isConfirmed ?? false);
+  const showCompanionContact = isPublisher;
 
   return (
     <View className={styles.page}>
@@ -126,6 +130,24 @@ const CardDetailPage: React.FC = () => {
           <Text className={styles.description}>{card.description}</Text>
         </View>
 
+        {showPublisherContact && (
+          <View className={styles.contactSection}>
+            <Text className={styles.sectionTitle}>
+              {isPublisher ? '我的联系方式' : '发布者联系方式'}
+            </Text>
+            <View className={styles.contactCard}>
+              <View className={styles.contactItem}>
+                <Text className={styles.contactLabel}>微信号</Text>
+                <Text className={styles.contactValue}>{card.publisherWechat || '暂无'}</Text>
+              </View>
+              <View className={styles.contactItem}>
+                <Text className={styles.contactLabel}>手机号</Text>
+                <Text className={styles.contactValue}>{card.publisherPhone || '暂无'}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
         {!isPublisher && !myIntention && !hasSubmitted && card.status === 'open' && (
           <View className={styles.intentionSection}>
             <Text className={styles.sectionTitle}>选择同行意向</Text>
@@ -160,22 +182,14 @@ const CardDetailPage: React.FC = () => {
             <Text className={styles.waitingText}>
               你已选择「{intentionOptions.find(o => o.type === myIntention.intention)?.label}」意向，等待对方确认
             </Text>
+            <Text className={styles.waitingHint}>对方确认后将自动解锁联系方式</Text>
           </View>
         )}
 
         {myIntention && myIntention.isConfirmed && (
-          <View className={styles.contactSection}>
-            <Text className={styles.sectionTitle}>已确认 - 联系方式</Text>
-            <View className={styles.contactCard}>
-              <View className={styles.contactItem}>
-                <Text className={styles.contactLabel}>发布者微信</Text>
-                <Text className={styles.contactValue}>jubensha_{card.publisherId}</Text>
-              </View>
-              <View className={styles.contactItem}>
-                <Text className={styles.contactLabel}>发布者手机</Text>
-                <Text className={styles.contactValue}>138****8888</Text>
-              </View>
-            </View>
+          <View className={styles.successSection}>
+            <Text className={styles.successIcon}>✅</Text>
+            <Text className={styles.successText}>已确认同行，上面已显示发布者联系方式</Text>
           </View>
         )}
 
@@ -199,8 +213,11 @@ const CardDetailPage: React.FC = () => {
                     type="primary"
                     size="small"
                   />
-                  {isPublisher && (
-                    <Text className={styles.companionContact}>已开放联系</Text>
+                  {showCompanionContact && comp.wechatId && (
+                    <View className={styles.compContact}>
+                      <Text className={styles.compContactText}>微信: {comp.wechatId}</Text>
+                      {comp.phone && <Text className={styles.compContactText}>手机: {comp.phone}</Text>}
+                    </View>
                   )}
                 </View>
               ))}
@@ -223,6 +240,8 @@ const CardDetailPage: React.FC = () => {
                     <Button className={styles.confirmBtn} onClick={() => handleConfirm(comp.id)}>
                       <Text className={styles.confirmBtnText}>确认</Text>
                     </Button>
+                  ) : comp.userId === profile.id ? (
+                    <Tag text="等待确认" type="warning" size="small" />
                   ) : (
                     <Tag text="待确认" type="warning" size="small" />
                   )}

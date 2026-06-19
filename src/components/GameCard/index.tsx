@@ -3,13 +3,14 @@ import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import type { TourGame } from '../../types/game';
+import type { MatchReason } from '../../store/useUserStore';
 import { scriptTypeLabels } from '../../types/user';
 import { formatDate } from '../../utils/date';
 import Tag from '../Tag';
 import MatchBadge from '../MatchBadge';
 
 interface GameCardProps {
-  game: TourGame;
+  game: TourGame & { matchScore?: number; matchReasons?: MatchReason[] };
 }
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {
@@ -19,6 +20,9 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
       url: `/pages/game-detail/index?id=${game.id}`
     });
   };
+
+  const matchReasons = game.matchReasons || [];
+  const topReasons = matchReasons.filter(r => r.match).slice(0, 2);
 
   return (
     <View className={styles.card} onClick={handleClick}>
@@ -30,7 +34,7 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
           </View>
         )}
         <View className={styles.matchBadgeWrapper}>
-          <MatchBadge score={game.matchScore} />
+          <MatchBadge score={game.matchScore ?? game.matchScore ?? 0} />
         </View>
       </View>
 
@@ -38,6 +42,17 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
         <View className={styles.header}>
           <Text className={styles.title}>{game.title}</Text>
         </View>
+
+        {topReasons.length > 0 && (
+          <View className={styles.matchReasonRow}>
+            {topReasons.map((reason) => (
+              <View key={reason.key} className={styles.matchReasonTag}>
+                <Text className={styles.matchReasonIcon}>✓</Text>
+                <Text className={styles.matchReasonText}>{reason.label}</Text>
+              </View>
+            ))}
+          </View>
+        )}
 
         <View className={styles.metaRow}>
           <View className={styles.metaItem}>

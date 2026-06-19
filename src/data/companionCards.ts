@@ -6,10 +6,12 @@ export const mockCompanionCards: CompanionCard[] = [
     publisherId: 'u1',
     publisherName: '剧本杀爱好者小明',
     publisherAvatar: 'https://picsum.photos/id/64/200/200',
+    publisherWechat: 'xiaoming_jbs',
+    publisherPhone: '138****1234',
     targetCity: '上海',
     scriptName: '惊华',
     scriptType: 'campaign',
-    date: '2026-06-22',
+    date: '2026-06-27',
     missingRoles: 3,
     totalRoles: 7,
     acceptShareRoom: true,
@@ -24,7 +26,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/91/200/200',
         intention: 'all',
         isConfirmed: true,
-        city: '北京'
+        city: '北京',
+        wechatId: 'xiaohong_jbs',
+        phone: '139****5678'
       },
       {
         id: 'comp2',
@@ -44,10 +48,12 @@ export const mockCompanionCards: CompanionCard[] = [
     publisherId: 'u4',
     publisherName: '情感本玩家',
     publisherAvatar: 'https://picsum.photos/id/338/200/200',
+    publisherWechat: 'qinggan_wan',
+    publisherPhone: '137****9999',
     targetCity: '杭州',
     scriptName: '雾起云浮',
     scriptType: 'emotion',
-    date: '2026-06-22',
+    date: '2026-06-28',
     missingRoles: 3,
     totalRoles: 6,
     acceptShareRoom: true,
@@ -62,7 +68,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/1027/200/200',
         intention: 'table',
         isConfirmed: true,
-        city: '苏州'
+        city: '苏州',
+        wechatId: 'xiaolin_jbs',
+        phone: '136****1111'
       }
     ],
     createdAt: '2026-06-16',
@@ -73,10 +81,12 @@ export const mockCompanionCards: CompanionCard[] = [
     publisherId: 'u6',
     publisherName: '硬核推土机',
     publisherAvatar: 'https://picsum.photos/id/237/200/200',
+    publisherWechat: 'yinghe_tuiji',
+    publisherPhone: '135****2222',
     targetCity: '北京',
     scriptName: '周公游记',
     scriptType: 'suspense',
-    date: '2026-06-29',
+    date: '2026-07-04',
     missingRoles: 4,
     totalRoles: 6,
     acceptShareRoom: false,
@@ -92,10 +102,12 @@ export const mockCompanionCards: CompanionCard[] = [
     publisherId: 'u7',
     publisherName: '欢乐喜剧人',
     publisherAvatar: 'https://picsum.photos/id/659/200/200',
+    publisherWechat: 'huanle_xiju',
+    publisherPhone: '134****3333',
     targetCity: '成都',
     scriptName: '金陵有座东君书院',
     scriptType: 'joy',
-    date: '2026-06-29',
+    date: '2026-07-05',
     missingRoles: 1,
     totalRoles: 6,
     acceptShareRoom: true,
@@ -110,7 +122,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/718/200/200',
         intention: 'all',
         isConfirmed: true,
-        city: '重庆'
+        city: '重庆',
+        wechatId: 'xiaohua_cd',
+        phone: '133****4444'
       },
       {
         id: 'comp5',
@@ -119,7 +133,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/783/200/200',
         intention: 'room',
         isConfirmed: true,
-        city: '重庆'
+        city: '重庆',
+        wechatId: 'aqiang_cd',
+        phone: '132****5555'
       },
       {
         id: 'comp6',
@@ -128,7 +144,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/1025/200/200',
         intention: 'table',
         isConfirmed: true,
-        city: '成都'
+        city: '成都',
+        wechatId: 'xiaomei_cd',
+        phone: '131****6666'
       },
       {
         id: 'comp7',
@@ -148,10 +166,12 @@ export const mockCompanionCards: CompanionCard[] = [
     publisherId: 'u12',
     publisherName: '胆大妄为',
     publisherAvatar: 'https://picsum.photos/id/1082/200/200',
+    publisherWechat: 'danda_wangwei',
+    publisherPhone: '130****7777',
     targetCity: '深圳',
     scriptName: '权倾天下',
     scriptType: 'campaign',
-    date: '2026-07-06',
+    date: '2026-07-11',
     missingRoles: 3,
     totalRoles: 8,
     acceptShareRoom: true,
@@ -166,7 +186,9 @@ export const mockCompanionCards: CompanionCard[] = [
         avatar: 'https://picsum.photos/id/1/200/200',
         intention: 'table',
         isConfirmed: true,
-        city: '广州'
+        city: '广州',
+        wechatId: 'dajun_gz',
+        phone: '159****8888'
       },
       {
         id: 'comp9',
