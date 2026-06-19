@@ -300,6 +300,101 @@
   color: $color-primary;
 }
 
+.createTripSection,
+.tripLinkSection {
+  background: $gradient-primary;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.tripLinkSection {
+  background: rgba($color-primary, 0.1);
+  border: 2rpx solid $color-primary;
+}
+
+.createTripInfo,
+.tripLinkInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex: 1;
+}
+
+.createTripIcon,
+.tripLinkIcon {
+  font-size: 48rpx;
+}
+
+.createTripText,
+.tripLinkText {
+  flex: 1;
+}
+
+.createTripTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  display: block;
+}
+
+.tripLinkTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+  display: block;
+}
+
+.createTripSub {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 4rpx;
+  display: block;
+}
+
+.tripLinkSub {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.createTripBtn,
+.tripLinkBtn {
+  @include button-reset;
+  height: $button-height-md;
+  padding: 0 $spacing-lg;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-button;
+  flex-shrink: 0;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.tripLinkBtn {
+  background: $color-primary;
+}
+
+.createTripBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.tripLinkBtnText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
 .companionsSection {
   background: $color-bg-card;
   border-radius: $radius-lg;

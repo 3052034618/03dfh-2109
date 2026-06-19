@@ -250,3 +250,167 @@
   margin-top: 4rpx;
   display: block;
 }
+
+.cardLinkRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: $radius-md;
+  transition: all $transition-base;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+.cardLinkIcon {
+  font-size: 32rpx;
+}
+
+.cardLinkText {
+  flex: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-white;
+}
+
+.cardLinkArrow {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.shareRow {
+  display: flex;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+}
+
+.shareTag {
+  font-size: $font-size-xs;
+  padding: 8rpx 16rpx;
+  background: rgba(255, 255, 255, 0.15);
+  color: $color-text-white;
+  border-radius: $radius-sm;
+}
+
+.teamSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.contactHint {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.teamMember {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+}
+
+.memberAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+}
+
+.memberInfo {
+  flex: 1;
+}
+
+.memberName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.memberTaskCount {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-top: 4rpx;
+}
+
+.memberContactRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-top: $spacing-sm;
+}
+
+.memberContactTag {
+  font-size: $font-size-xs;
+  padding: 6rpx 14rpx;
+  background: rgba($color-primary, 0.08);
+  color: $color-primary;
+  border-radius: $radius-sm;
+  font-weight: $font-weight-medium;
+}
+
+.assigneeRow {
+  margin-top: -8rpx;
+  margin-bottom: $spacing-md;
+  margin-left: 64rpx;
+  padding: $spacing-xs 0;
+}
+
+.assigneeTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.assigneeIcon {
+  font-size: 20rpx;
+}
+
+.assigneeAssignBtn {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.assigneePicker {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  background: rgba($color-primary, 0.08);
+  border-radius: $radius-sm;
+}
+
+.assigneePickerText {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+

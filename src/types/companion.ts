@@ -38,6 +38,7 @@ export interface CompanionCard {
   companions: Companion[];
   createdAt: string;
   status: 'open' | 'full' | 'completed';
+  tripId?: string;
 }
 
 export interface IntentionRequest {

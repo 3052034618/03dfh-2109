@@ -129,6 +129,46 @@
   font-weight: $font-weight-medium;
 }
 
+.sortBar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.sortLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.sortOption {
+  padding: 10rpx 20rpx;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.sortOptionActive {
+  background: rgba($color-primary, 0.1);
+  border-color: $color-primary;
+}
+
+.sortText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.sortTextActive {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
 .filterScroll {
   margin-bottom: $spacing-md;
   white-space: nowrap;

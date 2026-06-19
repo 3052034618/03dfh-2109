@@ -12,12 +12,15 @@ import CompanionCardComponent from '../../components/CompanionCard';
 
 type TabType = 'all' | 'published' | 'joined';
 type JoinedFilter = 'all' | 'pending' | 'confirmed' | 'ended';
+type SortMode = 'date' | 'city';
 
 const CompanionPage: React.FC = () => {
   const { companionCards } = useAppStore();
   const { profile } = useUserStore();
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [joinedFilter, setJoinedFilter] = useState<JoinedFilter>('all');
+  const [publishedFilter, setPublishedFilter] = useState<JoinedFilter>('all');
+  const [sortMode, setSortMode] = useState<SortMode>('date');
   const [selectedCity, setSelectedCity] = useState('全部');
   const [selectedType, setSelectedType] = useState<ScriptType | 'all'>('all');
 
@@ -57,21 +60,48 @@ const CompanionPage: React.FC = () => {
     });
   }, [joinedCards, joinedFilter, profile.id]);
 
+  const publishedCards = useMemo(() => {
+    return companionCards.filter(c => c.publisherId === profile.id).filter(card => {
+      if (publishedFilter === 'pending') {
+        return card.companions.some(c => !c.isConfirmed);
+      }
+      if (publishedFilter === 'confirmed') {
+        return card.companions.length > 0 && card.companions.every(c => c.isConfirmed);
+      }
+      if (publishedFilter === 'ended') {
+        return card.status === 'completed';
+      }
+      return true;
+    });
+  }, [companionCards, publishedFilter, profile.id]);
+
   const filteredCards = useMemo(() => {
     let baseCards = companionCards;
 
     if (activeTab === 'published') {
-      baseCards = companionCards.filter(c => c.publisherId === profile.id);
+      baseCards = publishedCards;
     } else if (activeTab === 'joined') {
       baseCards = filteredJoinedCards;
     }
 
-    return baseCards.filter((card) => {
+    const filtered = baseCards.filter((card) => {
       if (selectedCity !== '全部' && card.targetCity !== selectedCity) return false;
       if (selectedType !== 'all' && card.scriptType !== selectedType) return false;
       return true;
     });
-  }, [companionCards, activeTab, selectedCity, selectedType, filteredJoinedCards, profile.id]);
+
+    return filtered.sort((a, b) => {
+      const aIsEnded = a.status === 'completed';
+      const bIsEnded = b.status === 'completed';
+      if (aIsEnded !== bIsEnded) return aIsEnded ? 1 : -1;
+
+      if (sortMode === 'date') {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      } else {
+        return a.targetCity.localeCompare(b.targetCity, 'zh');
+      }
+    });
+  }, [companionCards, activeTab, selectedCity, selectedType, filteredJoinedCards, publishedCards, sortMode]);
 
   const handlePublish = () => {
     console.log('[CompanionPage] 点击发布约伴卡');
@@ -146,19 +176,40 @@ const CompanionPage: React.FC = () => {
           </View>
         </View>
 
-        {activeTab === 'joined' && (
+        {(activeTab === 'joined' || activeTab === 'published') && (
           <View className={styles.subFilterBar}>
             {joinedFilters.map((f) => (
               <View
                 key={f.key}
-                className={classnames(styles.subFilterItem, joinedFilter === f.key && styles.subFilterItemActive)}
-                onClick={() => setJoinedFilter(f.key)}
+                className={classnames(styles.subFilterItem, (activeTab === 'joined' ? joinedFilter : publishedFilter) === f.key && styles.subFilterItemActive)}
+                onClick={() => {
+                  if (activeTab === 'joined') setJoinedFilter(f.key);
+                  else setPublishedFilter(f.key);
+                }}
               >
-                <Text className={joinedFilter === f.key ? styles.subFilterTextActive : styles.subFilterText}>
+                <Text className={(activeTab === 'joined' ? joinedFilter : publishedFilter) === f.key ? styles.subFilterTextActive : styles.subFilterText}>
                   {f.label}
                 </Text>
               </View>
             ))}
+          </View>
+        )}
+
+        {(activeTab === 'joined' || activeTab === 'published') && (
+          <View className={styles.sortBar}>
+            <Text className={styles.sortLabel}>排序：</Text>
+            <View
+              className={classnames(styles.sortOption, sortMode === 'date' && styles.sortOptionActive)}
+              onClick={() => setSortMode('date')}
+            >
+              <Text className={sortMode === 'date' ? styles.sortTextActive : styles.sortText}>📅 按日期</Text>
+            </View>
+            <View
+              className={classnames(styles.sortOption, sortMode === 'city' && styles.sortOptionActive)}
+              onClick={() => setSortMode('city')}
+            >
+              <Text className={sortMode === 'city' ? styles.sortTextActive : styles.sortText}>🏙️ 按城市</Text>
+            </View>
           </View>
         )}
 

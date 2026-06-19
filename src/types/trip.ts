@@ -7,6 +7,8 @@ export interface ChecklistItem {
   isCompleted: boolean;
   note?: string;
   dueDate?: string;
+  assigneeId?: string;
+  assigneeName?: string;
 }
 
 export interface Trip {
@@ -38,7 +40,10 @@ export interface Trip {
   totalBudget: number;
   checklist: ChecklistItem[];
   status: 'upcoming' | 'ongoing' | 'completed';
-  companions: string[];
+  companions: { id: string; nickname: string; avatar: string; intention: string; wechatId?: string; phone?: string }[];
+  sourceCardId?: string;
+  acceptShareRoom?: boolean;
+  acceptShareCar?: boolean;
 }
 
 export const categoryLabels: Record<ChecklistCategory, string> = {

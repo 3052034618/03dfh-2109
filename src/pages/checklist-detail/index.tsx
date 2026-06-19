@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View, Text } from '@tarojs/components';
+import React, { useMemo, useState } from 'react';
+import { View, Text, Image, Button, Picker } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
@@ -16,14 +16,20 @@ const categoryIcons: Record<ChecklistCategory, string> = {
 };
 
 const ChecklistDetailPage: React.FC = () => {
-  const { trips, toggleChecklistItem } = useAppStore();
+  const { trips, toggleChecklistItem, setChecklistItemAssignee, companionCards } = useAppStore();
 
   const params = Taro.getCurrentInstance().router?.params;
   const tripId = params?.id || '';
+  const [assignTargetItemId, setAssignTargetItemId] = useState<string | null>(null);
 
   const trip = useMemo(() => {
     return trips.find(t => t.id === tripId);
   }, [trips, tripId]);
+
+  const linkedCard = useMemo(() => {
+    if (!trip?.sourceCardId) return null;
+    return companionCards.find(c => c.id === trip.sourceCardId);
+  }, [trip, companionCards]);
 
   if (!trip) {
     return (
@@ -54,6 +60,32 @@ const ChecklistDetailPage: React.FC = () => {
     console.log('[ChecklistDetailPage] 切换清单项:', itemId, item?.isCompleted ? '取消完成' : '标记完成');
   };
 
+  const handleAssign = (itemId: string) => {
+    setAssignTargetItemId(itemId);
+  };
+
+  const handlePickAssignee = (e: any) => {
+    if (!assignTargetItemId) return;
+    const idx = parseInt(e.detail.value);
+    const member = trip.companions[idx];
+    if (member) {
+      setChecklistItemAssignee(trip.id, assignTargetItemId, member.id, member.nickname);
+      console.log('[ChecklistDetailPage] 指定负责人:', member.nickname, 'itemId:', assignTargetItemId);
+    }
+    setAssignTargetItemId(null);
+  };
+
+  const handleOpenCard = () => {
+    if (linkedCard) {
+      Taro.navigateTo({
+        url: `/pages/card-detail/index?id=${linkedCard.id}`
+      });
+    }
+  };
+
+  const companionNames = trip.companions.map(c => c.nickname);
+  const membersWithContacts = trip.companions.filter(c => (c.wechatId && c.wechatId.trim() !== '') || (c.phone && c.phone.trim() !== ''));
+
   return (
     <View className={styles.page}>
       <View className="pageContainer">
@@ -66,6 +98,21 @@ const ChecklistDetailPage: React.FC = () => {
             <Text className={styles.storeName}>{trip.storeName}</Text>
             <Text className={styles.storeAddress}>{trip.storeAddress}</Text>
           </View>
+
+          {linkedCard && (
+            <View className={styles.cardLinkRow} onClick={handleOpenCard}>
+              <Text className={styles.cardLinkIcon}>📋</Text>
+              <Text className={styles.cardLinkText}>关联约伴卡</Text>
+              <Text className={styles.cardLinkArrow}>→</Text>
+            </View>
+          )}
+
+          {(trip.acceptShareRoom || trip.acceptShareCar) && (
+            <View className={styles.shareRow}>
+              {trip.acceptShareRoom && <Text className={styles.shareTag}>🏨 接受拼房</Text>}
+              {trip.acceptShareCar && <Text className={styles.shareTag}>🚗 接受拼车</Text>}
+            </View>
+          )}
         </View>
 
         <View className={styles.progressCard}>
@@ -82,9 +129,48 @@ const ChecklistDetailPage: React.FC = () => {
           </View>
         </View>
 
+        {trip.companions.length > 0 && (
+          <View className={styles.teamSection}>
+            <View className={styles.sectionHeaderRow}>
+              <Text className={styles.sectionTitle}>同行协作（{trip.companions.length}人）</Text>
+              {membersWithContacts.length > 0 && (
+                <Text className={styles.contactHint}>💬 点击可联系</Text>
+              )}
+            </View>
+            <View className={styles.teamList}>
+              {trip.companions.map((member) => {
+                const itemsAssigned = trip.checklist.filter(i => i.assigneeId === member.id);
+                const itemsCompleted = itemsAssigned.filter(i => i.isCompleted).length;
+                const hasContact = (member.wechatId && member.wechatId.trim() !== '') || (member.phone && member.phone.trim() !== '');
+                return (
+                  <View key={member.id} className={styles.teamMember}>
+                    <Image className={styles.memberAvatar} src={member.avatar} mode="aspectFill" />
+                    <View className={styles.memberInfo}>
+                      <Text className={styles.memberName}>{member.nickname}</Text>
+                      <Text className={styles.memberTaskCount}>
+                        负责 {itemsAssigned.length} 项 · 已完成 {itemsCompleted}
+                      </Text>
+                      {hasContact && (
+                        <View className={styles.memberContactRow}>
+                          {member.wechatId && member.wechatId.trim() !== '' && (
+                            <Text className={styles.memberContactTag}>微信 {member.wechatId}</Text>
+                          )}
+                          {member.phone && member.phone.trim() !== '' && (
+                            <Text className={styles.memberContactTag}>手机 {member.phone}</Text>
+                          )}
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        )}
+
         {trip.transportBooking && (
           <View className={styles.bookingCard}>
-            <Text className={styles.bookingTitle}>交通信息</Text>
+            <Text className={styles.sectionTitle}>交通信息</Text>
             <View className={styles.bookingRow}>
               <Text className={styles.bookingLabel}>{trip.transportBooking.type === 'plane' ? '航班号' : '车次'}</Text>
               <Text className={styles.bookingValue}>{trip.transportBooking.bookingNo}</Text>
@@ -106,7 +192,7 @@ const ChecklistDetailPage: React.FC = () => {
 
         {trip.accommodationBooking && (
           <View className={styles.bookingCard}>
-            <Text className={styles.bookingTitle}>住宿信息</Text>
+            <Text className={styles.sectionTitle}>住宿信息</Text>
             <View className={styles.bookingRow}>
               <Text className={styles.bookingLabel}>酒店</Text>
               <Text className={styles.bookingValue}>{trip.accommodationBooking.hotelName}</Text>
@@ -138,23 +224,45 @@ const ChecklistDetailPage: React.FC = () => {
               <Text className={styles.categoryCount}>{completedInGroup}/{items.length}</Text>
             </View>
             {items.map((item) => (
-              <View
-                key={item.id}
-                className={classnames(styles.checkItem, item.isCompleted && styles.checkItemDone)}
-                onClick={() => handleToggle(item.id)}
-              >
-                <View className={classnames(styles.checkbox, item.isCompleted && styles.checkboxChecked)}>
-                  {item.isCompleted && <Text className={styles.checkmark}>✓</Text>}
+              <View key={item.id}>
+                <View
+                  className={classnames(styles.checkItem, item.isCompleted && styles.checkItemDone)}
+                  onClick={() => handleToggle(item.id)}
+                >
+                  <View className={classnames(styles.checkbox, item.isCompleted && styles.checkboxChecked)}>
+                    {item.isCompleted && <Text className={styles.checkmark}>✓</Text>}
+                  </View>
+                  <View className={styles.checkContent}>
+                    <Text className={classnames(styles.checkTitle, item.isCompleted && styles.checkTitleDone)}>
+                      {item.title}
+                    </Text>
+                    {item.note && (
+                      <Text className={styles.checkNote}>{item.note}</Text>
+                    )}
+                    {item.dueDate && (
+                      <Text className={styles.checkDue}>截止 {formatDate(item.dueDate)}</Text>
+                    )}
+                  </View>
                 </View>
-                <View className={styles.checkContent}>
-                  <Text className={classnames(styles.checkTitle, item.isCompleted && styles.checkTitleDone)}>
-                    {item.title}
-                  </Text>
-                  {item.note && (
-                    <Text className={styles.checkNote}>{item.note}</Text>
-                  )}
-                  {item.dueDate && (
-                    <Text className={styles.checkDue}>截止 {formatDate(item.dueDate)}</Text>
+                <View className={styles.assigneeRow} onClick={(e) => { e.stopPropagation?.(); handleAssign(item.id); }}>
+                  {assignTargetItemId === item.id ? (
+                    <Picker
+                      mode="selector"
+                      range={companionNames}
+                      onChange={handlePickAssignee}
+                      onCancel={() => setAssignTargetItemId(null)}
+                    >
+                      <View className={styles.assigneePicker}>
+                        <Text className={styles.assigneePickerText}>选择负责人...</Text>
+                      </View>
+                    </Picker>
+                  ) : item.assigneeName ? (
+                    <Text className={styles.assigneeTag}>
+                      <Text className={styles.assigneeIcon}>👤</Text>
+                      负责人: {item.assigneeName}
+                    </Text>
+                  ) : (
+                    <Text className={styles.assigneeAssignBtn}>+ 指定负责人</Text>
                   )}
                 </View>
               </View>

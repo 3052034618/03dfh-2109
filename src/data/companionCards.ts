@@ -41,7 +41,8 @@ export const mockCompanionCards: CompanionCard[] = [
       }
     ],
     createdAt: '2026-06-15',
-    status: 'open'
+    status: 'open',
+    tripId: 't1'
   },
   {
     id: 'c2',
@@ -74,7 +75,8 @@ export const mockCompanionCards: CompanionCard[] = [
       }
     ],
     createdAt: '2026-06-16',
-    status: 'open'
+    status: 'open',
+    tripId: 't2'
   },
   {
     id: 'c3',
@@ -159,7 +161,8 @@ export const mockCompanionCards: CompanionCard[] = [
       }
     ],
     createdAt: '2026-06-18',
-    status: 'full'
+    status: 'full',
+    tripId: 't3'
   },
   {
     id: 'c5',

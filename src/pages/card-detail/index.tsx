@@ -18,7 +18,7 @@ const intentionOptions: { type: IntentionType; label: string; desc: string }[] =
 ];
 
 const CardDetailPage: React.FC = () => {
-  const { companionCards, addIntention, confirmIntention } = useAppStore();
+  const { companionCards, trips, addIntention, confirmIntention, createTripFromCard } = useAppStore();
   const { profile } = useUserStore();
   const [selectedIntention, setSelectedIntention] = useState<IntentionType | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -30,6 +30,11 @@ const CardDetailPage: React.FC = () => {
     return companionCards.find(c => c.id === cardId);
   }, [companionCards, cardId]);
 
+  const linkedTrip = useMemo(() => {
+    if (!card?.tripId) return null;
+    return trips.find(t => t.id === card.tripId);
+  }, [card, trips]);
+
   const myIntention = useMemo(() => {
     if (!card) return null;
     return card.companions.find(c => c.userId === profile.id);
@@ -38,6 +43,7 @@ const CardDetailPage: React.FC = () => {
   const isPublisher = card?.publisherId === profile.id;
   const confirmedCompanions = card?.companions.filter(c => c.isConfirmed) || [];
   const pendingCompanions = card?.companions.filter(c => !c.isConfirmed) || [];
+  const canCreateTrip = (isPublisher || (myIntention?.isConfirmed ?? false)) && confirmedCompanions.length > 0;
 
   const handleExpressIntention = () => {
     if (!selectedIntention || !card) return;
@@ -67,6 +73,30 @@ const CardDetailPage: React.FC = () => {
     Taro.showToast({ title: '已确认', icon: 'success' });
   };
 
+  const handleCreateTrip = () => {
+    if (!card) return;
+    const trip = createTripFromCard(card.id);
+    if (trip) {
+      console.log('[CardDetailPage] 生成行程:', trip.id);
+      Taro.showToast({ title: '行程已生成', icon: 'success' });
+      setTimeout(() => {
+        Taro.navigateTo({
+          url: `/pages/checklist-detail/index?id=${trip.id}`
+        });
+      }, 1200);
+    } else {
+      Taro.showToast({ title: '生成行程失败', icon: 'none' });
+    }
+  };
+
+  const handleOpenTrip = () => {
+    if (linkedTrip) {
+      Taro.navigateTo({
+        url: `/pages/checklist-detail/index?id=${linkedTrip.id}`
+      });
+    }
+  };
+
   if (!card) {
     return (
       <View className={styles.page}>
@@ -79,7 +109,9 @@ const CardDetailPage: React.FC = () => {
 
   const scriptType = card.scriptType as keyof typeof scriptTypeLabels;
   const showPublisherContact = isPublisher || (myIntention?.isConfirmed ?? false);
-  const showCompanionContact = isPublisher;
+  const showCompanionContact = isPublisher || (myIntention?.isConfirmed ?? false);
+
+  const hasPublisherContact = (card.publisherWechat && card.publisherWechat.trim() !== '') || (card.publisherPhone && card.publisherPhone.trim() !== '');
 
   return (
     <View className={styles.page}>
@@ -130,20 +162,54 @@ const CardDetailPage: React.FC = () => {
           <Text className={styles.description}>{card.description}</Text>
         </View>
 
-        {showPublisherContact && (
+        {canCreateTrip && (
+          linkedTrip ? (
+            <View className={styles.tripLinkSection}>
+              <View className={styles.tripLinkInfo}>
+                <Text className={styles.tripLinkIcon}>🎒</Text>
+                <View className={styles.tripLinkText}>
+                  <Text className={styles.tripLinkTitle}>已有关联行程</Text>
+                  <Text className={styles.tripLinkSub}>{linkedTrip.title}</Text>
+                </View>
+              </View>
+              <Button className={styles.tripLinkBtn} onClick={handleOpenTrip}>
+                <Text className={styles.tripLinkBtnText}>查看行程 →</Text>
+              </Button>
+            </View>
+          ) : (
+            <View className={styles.createTripSection}>
+              <View className={styles.createTripInfo}>
+                <Text className={styles.createTripIcon}>✨</Text>
+                <View className={styles.createTripText}>
+                  <Text className={styles.createTripTitle}>一键生成行程</Text>
+                  <Text className={styles.createTripSub}>自动带入城市、剧本、日期、同行人和清单</Text>
+                </View>
+              </View>
+              <Button className={styles.createTripBtn} onClick={handleCreateTrip}>
+                <Text className={styles.createTripBtnText}>生成行程</Text>
+              </Button>
+            </View>
+          )
+        )}
+
+        {showPublisherContact && hasPublisherContact && (
           <View className={styles.contactSection}>
             <Text className={styles.sectionTitle}>
               {isPublisher ? '我的联系方式' : '发布者联系方式'}
             </Text>
             <View className={styles.contactCard}>
-              <View className={styles.contactItem}>
-                <Text className={styles.contactLabel}>微信号</Text>
-                <Text className={styles.contactValue}>{card.publisherWechat || '暂无'}</Text>
-              </View>
-              <View className={styles.contactItem}>
-                <Text className={styles.contactLabel}>手机号</Text>
-                <Text className={styles.contactValue}>{card.publisherPhone || '暂无'}</Text>
-              </View>
+              {card.publisherWechat && card.publisherWechat.trim() !== '' && (
+                <View className={styles.contactItem}>
+                  <Text className={styles.contactLabel}>微信号</Text>
+                  <Text className={styles.contactValue}>{card.publisherWechat}</Text>
+                </View>
+              )}
+              {card.publisherPhone && card.publisherPhone.trim() !== '' && (
+                <View className={styles.contactItem}>
+                  <Text className={styles.contactLabel}>手机号</Text>
+                  <Text className={styles.contactValue}>{card.publisherPhone}</Text>
+                </View>
+              )}
             </View>
           </View>
         )}
@@ -189,7 +255,9 @@ const CardDetailPage: React.FC = () => {
         {myIntention && myIntention.isConfirmed && (
           <View className={styles.successSection}>
             <Text className={styles.successIcon}>✅</Text>
-            <Text className={styles.successText}>已确认同行，上面已显示发布者联系方式</Text>
+            <Text className={styles.successText}>
+              已确认同行{showPublisherContact && hasPublisherContact ? '，上面已显示发布者联系方式' : ''}
+            </Text>
           </View>
         )}
 
@@ -201,26 +269,33 @@ const CardDetailPage: React.FC = () => {
           {confirmedCompanions.length > 0 && (
             <View className={styles.companionGroup}>
               <Text className={styles.groupLabel}>已确认</Text>
-              {confirmedCompanions.map((comp) => (
-                <View key={comp.id} className={styles.companionItem}>
-                  <Image className={styles.companionAvatar} src={comp.avatar} mode="aspectFill" />
-                  <View className={styles.companionInfo}>
-                    <Text className={styles.companionName}>{comp.nickname}</Text>
-                    <Text className={styles.companionCity}>{comp.city}</Text>
-                  </View>
-                  <Tag
-                    text={intentionOptions.find(o => o.type === comp.intention)?.label || ''}
-                    type="primary"
-                    size="small"
-                  />
-                  {showCompanionContact && comp.wechatId && (
-                    <View className={styles.compContact}>
-                      <Text className={styles.compContactText}>微信: {comp.wechatId}</Text>
-                      {comp.phone && <Text className={styles.compContactText}>手机: {comp.phone}</Text>}
+              {confirmedCompanions.map((comp) => {
+                const hasCompContact = (comp.wechatId && comp.wechatId.trim() !== '') || (comp.phone && comp.phone.trim() !== '');
+                return (
+                  <View key={comp.id} className={styles.companionItem}>
+                    <Image className={styles.companionAvatar} src={comp.avatar} mode="aspectFill" />
+                    <View className={styles.companionInfo}>
+                      <Text className={styles.companionName}>{comp.nickname}</Text>
+                      <Text className={styles.companionCity}>{comp.city}</Text>
                     </View>
-                  )}
-                </View>
-              ))}
+                    <Tag
+                      text={intentionOptions.find(o => o.type === comp.intention)?.label || ''}
+                      type="primary"
+                      size="small"
+                    />
+                    {showCompanionContact && hasCompContact && (
+                      <View className={styles.compContact}>
+                        {comp.wechatId && comp.wechatId.trim() !== '' && (
+                          <Text className={styles.compContactText}>微信: {comp.wechatId}</Text>
+                        )}
+                        {comp.phone && comp.phone.trim() !== '' && (
+                          <Text className={styles.compContactText}>手机: {comp.phone}</Text>
+                        )}
+                      </View>
+                    )}
+                  </View>
+                );
+              })}
             </View>
           )}
 
