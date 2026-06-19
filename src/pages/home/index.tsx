@@ -7,6 +7,7 @@ import { useUserStore } from '../../store/useUserStore';
 import { scriptTypeLabels } from '../../types/user';
 import type { ScriptType } from '../../types/user';
 import type { TourGame } from '../../types/game';
+import { isDateInRange } from '../../utils/date';
 import GameCard from '../../components/GameCard';
 import FilterBar from '../../components/FilterBar';
 
@@ -40,6 +41,7 @@ const HomePage: React.FC = () => {
       .filter((game) => {
         if (filters.city !== '全部' && game.city !== filters.city) return false;
         if (filters.scriptType !== 'all' && game.scriptType !== filters.scriptType) return false;
+        if (filters.date !== '全部日期' && !isDateInRange(game.date, filters.date)) return false;
         return true;
       })
       .sort((a, b) => b.matchScore - a.matchScore);

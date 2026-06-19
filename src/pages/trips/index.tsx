@@ -1,32 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { mockTrips } from '../../data/trips';
-import type { Trip } from '../../types/trip';
+import { useAppStore } from '../../store/useAppStore';
 import TripCard from '../../components/TripCard';
 
 type TabType = 'upcoming' | 'ongoing' | 'completed';
 
 const TripsPage: React.FC = () => {
+  const { trips } = useAppStore();
   const [activeTab, setActiveTab] = useState<TabType>('upcoming');
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    console.log('[TripsPage] 页面加载，获取行程数据');
-    loadTrips();
-  }, []);
-
-  const loadTrips = () => {
-    setLoading(true);
-    setTimeout(() => {
-      console.log('[TripsPage] 行程数据加载完成，共', mockTrips.length, '条');
-      setTrips(mockTrips);
-      setLoading(false);
-    }, 500);
-  };
 
   const filteredTrips = useMemo(() => {
     return trips.filter((trip) => trip.status === activeTab);
@@ -101,9 +84,7 @@ const TripsPage: React.FC = () => {
           {activeTab === 'upcoming' ? '即将出发' : activeTab === 'ongoing' ? '进行中' : '已完成'}
         </Text>
 
-        {loading ? (
-          <Text className={styles.loadingText}>加载中...</Text>
-        ) : filteredTrips.length === 0 ? (
+        {filteredTrips.length === 0 ? (
           <View className={styles.emptyState}>
             <Text className={styles.emptyIcon}>✈️</Text>
             <Text className={styles.emptyText}>

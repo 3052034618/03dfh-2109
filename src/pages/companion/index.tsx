@@ -1,46 +1,34 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Button, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
-import { mockCompanionCards } from '../../data/companionCards';
+import { useAppStore } from '../../store/useAppStore';
 import { cities } from '../../data/games';
 import { scriptTypeLabels, type ScriptType } from '../../types/user';
 import type { CompanionCard } from '../../types/companion';
 import CompanionCardComponent from '../../components/CompanionCard';
 
 const CompanionPage: React.FC = () => {
+  const { companionCards } = useAppStore();
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
   const [selectedCity, setSelectedCity] = useState('全部');
   const [selectedType, setSelectedType] = useState<ScriptType | 'all'>('all');
-  const [cards, setCards] = useState<CompanionCard[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const pendingIntentions = 2;
-
-  useEffect(() => {
-    console.log('[CompanionPage] 页面加载，获取约伴卡数据');
-    loadCards();
-  }, []);
-
-  const loadCards = () => {
-    setLoading(true);
-    setTimeout(() => {
-      console.log('[CompanionPage] 约伴卡数据加载完成，共', mockCompanionCards.length, '条');
-      setCards(mockCompanionCards);
-      setLoading(false);
-      Taro.stopPullDownRefresh();
-    }, 500);
-  };
+  const pendingIntentions = useMemo(() => {
+    return companionCards.filter(c => c.publisherId === 'me').reduce((count, card) => {
+      return count + card.companions.filter(comp => !comp.isConfirmed).length;
+    }, 0);
+  }, [companionCards]);
 
   const filteredCards = useMemo(() => {
-    return cards.filter((card) => {
+    return companionCards.filter((card) => {
       if (activeTab === 'my' && card.publisherId !== 'me') return false;
       if (selectedCity !== '全部' && card.targetCity !== selectedCity) return false;
       if (selectedType !== 'all' && card.scriptType !== selectedType) return false;
       return true;
     });
-  }, [cards, activeTab, selectedCity, selectedType]);
+  }, [companionCards, activeTab, selectedCity, selectedType]);
 
   const handlePublish = () => {
     console.log('[CompanionPage] 点击发布约伴卡');
@@ -48,18 +36,6 @@ const CompanionPage: React.FC = () => {
       url: '/pages/publish-card/index'
     });
   };
-
-  const handlePullDownRefresh = () => {
-    console.log('[CompanionPage] 下拉刷新');
-    loadCards();
-  };
-
-  useEffect(() => {
-    Taro.onPullDownRefresh(handlePullDownRefresh);
-    return () => {
-      Taro.offPullDownRefresh(handlePullDownRefresh);
-    };
-  }, []);
 
   const scriptTypes = [
     { key: 'all' as const, label: '全部类型' },
@@ -122,9 +98,7 @@ const CompanionPage: React.FC = () => {
           ))}
         </ScrollView>
 
-        {loading ? (
-          <Text className={styles.loadingText}>加载中...</Text>
-        ) : filteredCards.length === 0 ? (
+        {filteredCards.length === 0 ? (
           <View className={styles.emptyState}>
             <Text className={styles.emptyIcon}>📝</Text>
             <Text className={styles.emptyText}>
