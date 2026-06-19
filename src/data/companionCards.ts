@@ -161,8 +161,7 @@ export const mockCompanionCards: CompanionCard[] = [
       }
     ],
     createdAt: '2026-06-18',
-    status: 'full',
-    tripId: 't3'
+    status: 'full'
   },
   {
     id: 'c5',

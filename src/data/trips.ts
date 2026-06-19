@@ -6,7 +6,7 @@ export const mockTrips: Trip[] = [
     title: '上海《惊华》之旅',
     city: '上海',
     scriptName: '惊华',
-    date: '2026-06-22',
+    date: '2026-06-27',
     time: '14:00',
     storeName: '上海剧本杀旗舰店',
     storeAddress: '上海市黄浦区南京东路100号',
@@ -14,15 +14,15 @@ export const mockTrips: Trip[] = [
     transportBooking: {
       type: 'plane',
       bookingNo: 'CA1234',
-      departureTime: '2026-06-22 08:00',
-      arrivalTime: '2026-06-22 10:30',
+      departureTime: '2026-06-27 08:00',
+      arrivalTime: '2026-06-27 10:30',
       price: 580
     },
     accommodationBooking: {
       hotelName: '上海如家酒店',
       address: '上海市黄浦区南京东路80号',
-      checkInDate: '2026-06-22',
-      checkOutDate: '2026-06-23',
+      checkInDate: '2026-06-27',
+      checkOutDate: '2026-06-28',
       price: 458,
       bookingNo: 'HOTEL5678'
     },
@@ -45,14 +45,24 @@ export const mockTrips: Trip[] = [
     ],
     sourceCardId: 'c1',
     acceptShareRoom: true,
-    acceptShareCar: true
+    acceptShareCar: true,
+    messages: [
+      { id: 'm1', tripId: 't1', userId: 'u1', userName: '小明', userAvatar: 'https://picsum.photos/id/64/200/200', content: '机票我订好了，CA1234，早上8点起飞', category: 'booking', createdAt: '2026-06-19T10:00:00Z' },
+      { id: 'm2', tripId: 't1', userId: 'u2', userName: '小红', userAvatar: 'https://picsum.photos/id/91/200/200', content: '收到！酒店那附近有什么推荐的吗？', category: 'hotel', createdAt: '2026-06-19T10:30:00Z' },
+      { id: 'm3', tripId: 't1', userId: 'u1', userName: '小明', userAvatar: 'https://picsum.photos/id/64/200/200', content: '如家酒店步行到店5分钟，我先订了双人房，到时候拼房哈', category: 'hotel', createdAt: '2026-06-19T11:00:00Z' }
+    ],
+    expenses: [
+      { id: 'e1', tripId: 't1', title: '往返机票', category: 'transport', amount: 1160, paidBy: 'u1', paidByName: '小明', splitAmong: ['u1', 'u2'], paidMembers: ['u1'], createdAt: '2026-06-19T10:00:00Z' },
+      { id: 'e2', tripId: 't1', title: '酒店一晚', category: 'accommodation', amount: 458, paidBy: 'u1', paidByName: '小明', splitAmong: ['u1', 'u2'], paidMembers: ['u1'], createdAt: '2026-06-19T11:00:00Z' },
+      { id: 'e3', tripId: 't1', title: '剧本定金', category: 'deposit', amount: 200, paidBy: 'u1', paidByName: '小明', splitAmong: ['u1', 'u2'], paidMembers: [], createdAt: '2026-06-18T15:00:00Z' }
+    ]
   },
   {
     id: 't2',
     title: '杭州《雾起云浮》情感之旅',
     city: '杭州',
     scriptName: '雾起云浮',
-    date: '2026-06-22',
+    date: '2026-06-28',
     time: '13:30',
     storeName: '杭州西湖推理社',
     storeAddress: '杭州市西湖区文三路200号',
@@ -60,15 +70,15 @@ export const mockTrips: Trip[] = [
     transportBooking: {
       type: 'train',
       bookingNo: 'G1234',
-      departureTime: '2026-06-22 09:00',
-      arrivalTime: '2026-06-22 10:30',
+      departureTime: '2026-06-28 09:00',
+      arrivalTime: '2026-06-28 10:30',
       price: 220
     },
     depositPaid: 100,
     totalBudget: 800,
     checklist: [
-      { id: 'item9', title: '订高铁票', category: 'beforeDeparture', isCompleted: true, dueDate: '2026-06-20', assigneeId: 'u4', assigneeName: '情感本玩家' },
-      { id: 'item10', title: '支付定金100元', category: 'beforeDeparture', isCompleted: false, dueDate: '2026-06-21' },
+      { id: 'item9', title: '订高铁票', category: 'beforeDeparture', isCompleted: true, dueDate: '2026-06-26', assigneeId: 'u4', assigneeName: '情感本玩家' },
+      { id: 'item10', title: '支付定金100元', category: 'beforeDeparture', isCompleted: false, dueDate: '2026-06-27' },
       { id: 'item11', title: '查看店家地址', category: 'beforeArrival', isCompleted: false },
       { id: 'item12', title: '确认开本时间', category: 'beforeArrival', isCompleted: false }
     ],
@@ -79,7 +89,14 @@ export const mockTrips: Trip[] = [
     ],
     sourceCardId: 'c2',
     acceptShareRoom: true,
-    acceptShareCar: false
+    acceptShareCar: false,
+    messages: [
+      { id: 'm4', tripId: 't2', userId: 'u4', userName: '情感本玩家', userAvatar: 'https://picsum.photos/id/338/200/200', content: '高铁票已买G1234，杭州东站见', category: 'booking', createdAt: '2026-06-18T14:00:00Z' },
+      { id: 'm5', tripId: 't2', userId: 'u5', userName: '小琳', userAvatar: 'https://picsum.photos/id/1027/200/200', content: '店家说下午1点半可以提前到店选角色', category: 'store', createdAt: '2026-06-19T09:00:00Z' }
+    ],
+    expenses: [
+      { id: 'e4', tripId: 't2', title: '高铁往返', category: 'transport', amount: 440, paidBy: 'u4', paidByName: '情感本玩家', splitAmong: ['u4', 'u5'], paidMembers: ['u4'], createdAt: '2026-06-18T14:00:00Z' }
+    ]
   },
   {
     id: 't3',
@@ -124,8 +141,16 @@ export const mockTrips: Trip[] = [
       { id: 'u9', nickname: '阿强', avatar: 'https://picsum.photos/id/783/200/200', intention: 'room', wechatId: 'aqiang_cd', phone: '132****5555' },
       { id: 'u10', nickname: '小美', avatar: 'https://picsum.photos/id/1025/200/200', intention: 'table', wechatId: 'xiaomei_cd', phone: '131****6666' }
     ],
-    sourceCardId: 'c4',
     acceptShareRoom: true,
-    acceptShareCar: true
+    acceptShareCar: true,
+    messages: [
+      { id: 'm6', tripId: 't3', userId: 'u7', userName: '欢乐喜剧人', userAvatar: 'https://picsum.photos/id/659/200/200', content: '上次玩得太开心了，下次再约！', category: 'other', createdAt: '2026-06-16T10:00:00Z' },
+      { id: 'm7', tripId: 't3', userId: 'u8', userName: '小花', userAvatar: 'https://picsum.photos/id/718/200/200', content: '店家拍照技术不错，合影发群里了', category: 'store', createdAt: '2026-06-16T12:00:00Z' }
+    ],
+    expenses: [
+      { id: 'e5', tripId: 't3', title: '高铁往返', category: 'transport', amount: 720, paidBy: 'u7', paidByName: '欢乐喜剧人', splitAmong: ['u7', 'u8', 'u9', 'u10'], paidMembers: ['u7', 'u8', 'u9', 'u10'], createdAt: '2026-06-14T10:00:00Z' },
+      { id: 'e6', tripId: 't3', title: '酒店两晚', category: 'accommodation', amount: 776, paidBy: 'u7', paidByName: '欢乐喜剧人', splitAmong: ['u7', 'u8', 'u9', 'u10'], paidMembers: ['u7', 'u8', 'u9', 'u10'], createdAt: '2026-06-14T11:00:00Z' },
+      { id: 'e7', tripId: 't3', title: '剧本费+定金', category: 'deposit', amount: 480, paidBy: 'u7', paidByName: '欢乐喜剧人', splitAmong: ['u7', 'u8', 'u9', 'u10'], paidMembers: ['u7', 'u8', 'u9', 'u10'], createdAt: '2026-06-14T15:00:00Z' }
+    ]
   }
 ];

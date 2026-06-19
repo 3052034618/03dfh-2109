@@ -22,6 +22,8 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
   const totalItems = trip.checklist.length;
   const progress = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
 
+  const companionNames = trip.companions.map(c => c.nickname).join('、');
+
   return (
     <View className={styles.card} onClick={handleClick}>
       <View className={styles.header}>
@@ -66,7 +68,7 @@ const TripCard: React.FC<TripCardProps> = ({ trip }) => {
         </View>
         <View className={styles.companions}>
           <Text className={styles.companionsLabel}>同行</Text>
-          <Text className={styles.companionsText}>{trip.companions.join('、')}</Text>
+          <Text className={styles.companionsText}>{companionNames}</Text>
         </View>
       </View>
     </View>

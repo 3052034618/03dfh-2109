@@ -8,6 +8,7 @@ export default defineAppConfig({
     'pages/card-detail/index',
     'pages/publish-card/index',
     'pages/checklist-detail/index',
+    'pages/expense-detail/index',
     'pages/edit-profile/index'
   ],
   window: {

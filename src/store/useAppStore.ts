@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { CompanionCard, Companion, IntentionType } from '../types/companion';
-import type { Trip, ChecklistItem } from '../types/trip';
+import type { Trip, ChecklistItem, TripMessage, Expense, ExpenseCategory } from '../types/trip';
 import { mockCompanionCards } from '../data/companionCards';
 import { mockTrips } from '../data/trips';
 import { loadFromStorage, saveToStorage, STORAGE_KEYS } from '../utils/storage';
@@ -20,6 +20,9 @@ interface AppState {
   setChecklistItemAssignee: (tripId: string, itemId: string, assigneeId?: string, assigneeName?: string) => void;
   createTripFromCard: (cardId: string) => Trip | null;
   setCardTripId: (cardId: string, tripId: string) => void;
+  addTripMessage: (tripId: string, message: Omit<TripMessage, 'id' | 'tripId' | 'createdAt'>) => void;
+  addExpense: (tripId: string, expense: Omit<Expense, 'id' | 'tripId' | 'createdAt'>) => void;
+  toggleExpensePaid: (tripId: string, expenseId: string, memberId: string) => void;
 }
 
 const generateDefaultChecklist = (card: CompanionCard): ChecklistItem[] => {
@@ -171,7 +174,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       companions: tripCompanions,
       sourceCardId: card.id,
       acceptShareRoom: card.acceptShareRoom,
-      acceptShareCar: card.acceptShareCar
+      acceptShareCar: card.acceptShareCar,
+      messages: [],
+      expenses: []
     };
 
     const newTrips = [newTrip, ...trips];
@@ -193,5 +198,62 @@ export const useAppStore = create<AppState>((set, get) => ({
       );
       saveToStorage(STORAGE_KEYS.COMPANION_CARDS, newCards);
       return { companionCards: newCards };
+    }),
+
+  addTripMessage: (tripId, message) =>
+    set((state) => {
+      const newMessage: TripMessage = {
+        ...message,
+        id: `msg_${tripId}_${Date.now()}`,
+        tripId,
+        createdAt: new Date().toISOString()
+      };
+      const newTrips = state.trips.map(trip =>
+        trip.id === tripId
+          ? { ...trip, messages: [...trip.messages, newMessage] }
+          : trip
+      );
+      saveToStorage(STORAGE_KEYS.TRIPS, newTrips);
+      return { trips: newTrips };
+    }),
+
+  addExpense: (tripId, expense) =>
+    set((state) => {
+      const newExpense: Expense = {
+        ...expense,
+        id: `exp_${tripId}_${Date.now()}`,
+        tripId,
+        createdAt: new Date().toISOString()
+      };
+      const newTrips = state.trips.map(trip =>
+        trip.id === tripId
+          ? { ...trip, expenses: [...trip.expenses, newExpense] }
+          : trip
+      );
+      saveToStorage(STORAGE_KEYS.TRIPS, newTrips);
+      return { trips: newTrips };
+    }),
+
+  toggleExpensePaid: (tripId, expenseId, memberId) =>
+    set((state) => {
+      const newTrips = state.trips.map(trip =>
+        trip.id === tripId
+          ? {
+              ...trip,
+              expenses: trip.expenses.map(exp =>
+                exp.id === expenseId
+                  ? {
+                      ...exp,
+                      paidMembers: exp.paidMembers.includes(memberId)
+                        ? exp.paidMembers.filter(m => m !== memberId)
+                        : [...exp.paidMembers, memberId]
+                    }
+                  : exp
+              )
+            }
+          : trip
+      );
+      saveToStorage(STORAGE_KEYS.TRIPS, newTrips);
+      return { trips: newTrips };
     })
 }));

@@ -16,6 +16,22 @@ export const formatDateTime = (dateTimeStr: string): string => {
   return `${month}月${day}日 ${hour}:${minute}`;
 };
 
+export const formatTime = (dateTimeStr: string): string => {
+  const date = new Date(dateTimeStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  const now = new Date();
+  const isToday = date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate();
+  if (isToday) return `今天 ${hour}:${minute}`;
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  const isYesterday = date.getFullYear() === yesterday.getFullYear() && date.getMonth() === yesterday.getMonth() && date.getDate() === yesterday.getDate();
+  if (isYesterday) return `昨天 ${hour}:${minute}`;
+  return `${month}/${day} ${hour}:${minute}`;
+};
+
 const getNextWeekendStart = (fromDate: Date, weeksAhead: number): Date => {
   const d = new Date(fromDate);
   d.setHours(0, 0, 0, 0);

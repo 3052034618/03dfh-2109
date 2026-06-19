@@ -414,3 +414,221 @@
   font-weight: $font-weight-medium;
 }
 
+.teamMemberActive {
+  background: rgba($color-primary, 0.08);
+  border: 2rpx solid $color-primary;
+}
+
+.memberArrow {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  align-self: center;
+}
+
+.filterReset {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.reassignHint {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  margin-left: 8rpx;
+}
+
+.expenseCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.expenseHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.expenseArrow {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+}
+
+.expenseSummary {
+  display: flex;
+  justify-content: space-around;
+}
+
+.expenseStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.expenseAmount {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.expenseLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.messagesSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.messageCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.msgCategoryBar {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+  overflow-x: auto;
+  padding-bottom: 4rpx;
+}
+
+.msgCategoryItem {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  padding: 8rpx 20rpx;
+  background: $color-bg-page;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+  transition: all $transition-base;
+}
+
+.msgCategoryActive {
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.messageList {
+  max-height: 500rpx;
+  overflow-y: auto;
+  margin-bottom: $spacing-md;
+  padding-right: $spacing-xs;
+}
+
+.emptyMessages {
+  padding: 48rpx 0;
+  text-align: center;
+}
+
+.emptyText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.messageItem {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.msgAvatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+}
+
+.msgContent {
+  flex: 1;
+}
+
+.msgHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rpx;
+}
+
+.msgName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.msgTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.msgText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.msgCategoryTag {
+  display: inline-block;
+  font-size: 20rpx;
+  color: $color-primary;
+  background: rgba($color-primary, 0.1);
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+  margin-top: 8rpx;
+}
+
+.msgInputBar {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.msgInput {
+  flex: 1;
+  height: 64rpx;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: 0 $spacing-md;
+  font-size: $font-size-sm;
+}
+
+.sendBtn {
+  padding: 12rpx 28rpx;
+  background: $gradient-primary;
+  border-radius: $radius-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.sendBtnDisabled {
+  opacity: 0.4;
+}
+
+.sendBtnText {
+  font-size: $font-size-sm;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
